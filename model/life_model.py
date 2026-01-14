@@ -59,4 +59,5 @@ class LifeModel:
         Remaining weeks = total - lived (never negative).
         """
         # TODO: implement
-        pass
+        remaining = self.total_weeks() - self.lived_weeks()
+        return max(remaining, 0)    # return positive always
