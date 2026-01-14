@@ -42,7 +42,10 @@ class LifeModel:
         Weeks lived from birth_date to today.
         """
         # TODO: implement using weeks_between
-        pass
+        if today is None:
+            today = date.today()
+            
+        return weeks_between(self.birth_date, today)
 
     def total_weeks(self) -> int:
         """
