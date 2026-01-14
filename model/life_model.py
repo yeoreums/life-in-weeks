@@ -52,7 +52,7 @@ class LifeModel:
         Total weeks in the expected lifespan.
         """
         # TODO: implement using weeks_between
-        pass
+        return weeks_between(self.birth_date, self.end_date())
 
     def remaining_weeks(self, today: date | None = None) -> int:
         """
