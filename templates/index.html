@@ -20,6 +20,19 @@
             required
             >
         </label>
+        <label style="margin-left: 16px;">
+            Lifespan (years):
+            <input
+                type="number"
+                name="lifespan"
+                value="{{ lifespan }}"
+                min="1"
+                max="130"
+                step="1"
+                required
+                >
+        </label>
+
         <button type="submit">Update</button>
         </form>
 

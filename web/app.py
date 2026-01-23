@@ -16,6 +16,7 @@ app = Flask(
 @app.route("/")
 def home():
     birth_str = request.args.get("birthdate")
+    lifespan_str = request.args.get("lifespan")
 
     today = date.today()
 
@@ -27,7 +28,17 @@ def home():
     if birth > today:
         birth = today
 
-    model = LifeModel(birth_date=birth, expected_years=90)
+    if lifespan_str:
+        try:
+            lifespan = int(lifespan_str)
+        except ValueError:
+            lifespan = 90
+    else:
+        lifespan = 90
+    
+    lifespan = max(1, min(lifespan, 130))
+
+    model = LifeModel(birth_date=birth, expected_years=lifespan)
 
     lived_weeks = model.lived_weeks(today)
     total_weeks = model.total_weeks()
@@ -48,6 +59,7 @@ def home():
         current_week_index=current_week_index,
         current_month_index=current_month_index,
         today=today.isoformat(),
+        lifespan=lifespan,
     )
 
 if __name__ == "__main__":
