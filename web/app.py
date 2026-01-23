@@ -18,7 +18,7 @@ def home():
 
     grid = render_week_grid(lived, total)
 
-    return grid
+    return f"<pre>{grid}</pre>"
 
 if __name__ == "__main__":
     app.run(debug=True)
