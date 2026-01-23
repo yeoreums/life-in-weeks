@@ -1,0 +1,106 @@
+:root {
+  --bg-main: #0f172a; /* Deep matte midnight */
+  --container-bg: #1e293b;
+  --text-head: #f8fafc;
+  --text-sub: #94a3b8;
+  
+  /* Cyber-Pastel Palette */
+  --color-lived: #a78bfa; /* Soft Pastel Purple */
+  --color-remaining: #334155; /* Muted Slate */
+  --color-accent: #2dd4bf; /* Mint Neon */
+}
+
+body {
+  background-color: var(--bg-main);
+  font-family: 'Inter', -apple-system, sans-serif;
+  color: var(--text-head);
+  padding: 20px;
+}
+
+.container {
+  max-width: 1100px; /* Widened to accommodate larger units */
+  margin: 40px auto;
+  padding: 32px;
+  background: var(--container-bg);
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+  font-size: 1.5rem;
+  letter-spacing: -0.025em;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.weeks-title {
+  color: var(--color-accent); /* mint neon */
+}
+
+.months-title {
+  color: var(--color-lived);  /* pastel purple */
+}
+
+/* WEEKS: Brutally optimized for readability */
+.weeks {
+  display: grid;
+  /* Reduced columns to 26 so they wrap naturally into a "Year Block" 
+     OR keep 52 but increase the container width. Let's go with 52 but LARGER. */
+  grid-template-columns: repeat(52, 14px); 
+  gap: 6px; 
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: 12px;
+  overflow-x: auto; /* Prevents breaking on small screens */
+}
+
+.week {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px; /* "Squircle" - scientifically easier to scan than circles */
+  background: var(--color-remaining);
+  transition: all 0.2s ease;
+}
+
+.week.lived {
+  background: var(--color-lived);
+  box-shadow: 0 0 8px rgba(167, 139, 250, 0.4);
+}
+
+/* MONTHS: Using your preferred Circles here */
+.months {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
+  gap: 12px;
+  padding: 20px;
+}
+
+.month {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%; /* Perfect circle */
+  background: var(--color-remaining);
+  border: 2px solid transparent;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.month.lived {
+  background: var(--color-accent);
+  box-shadow: 0 0 12px rgba(45, 212, 191, 0.3);
+}
+
+.month:hover {
+  transform: scale(1.4);
+  border-color: #ffffff;
+  cursor: pointer;
+}
+
+/* The "Glassmorphism" footer for context */
+.legend {
+  margin-top: 24px;
+  font-size: 0.8rem;
+  color: var(--text-sub);
+  display: flex;
+  gap: 16px;
+}

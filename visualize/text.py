@@ -28,7 +28,7 @@ def render_week_grid(lived: int, total: int, per_row: int = 52) -> str:
 def render_month_grid(
     lived_weeks: int,
     total_weeks: int,
-    per_row: int = 12,
+    per_row: int = 60,
 ) -> str:
     """
     Return a month-based life grid.

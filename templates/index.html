@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Life Calendar</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+  <h2 class="weeks-title">Life in Weeks</h2>
+  <div class="weeks">
+    {% for i in range(total_weeks) %}
+      <div class="week {{ 'lived' if i < lived_weeks else 'remaining' }}"></div>
+    {% endfor %}
+  </div>
+
+  <h2 class="months-title">Life in Months</h2>
+  <div class="months">
+    {% for i in range(total_months) %}
+      <div class="month {{ 'lived' if i < lived_months else 'remaining' }}"></div>
+    {% endfor %}
+  </div>
+
+</div>
+
+</body>
+</html>

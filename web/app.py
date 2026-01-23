@@ -1,10 +1,17 @@
-from flask import Flask
+import os
+from flask import Flask, render_template
 from datetime import date
 from model.life_model import LifeModel
-from visualize.text import render_week_grid, render_month_grid
 
 
-app = Flask(__name__)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+app = Flask(
+    __name__,
+    template_folder=os.path.join(BASE_DIR, "templates"),
+    static_folder=os.path.join(BASE_DIR, "static"),
+)
+
 
 @app.route("/")
 def home():
@@ -13,47 +20,25 @@ def home():
 
     today = date(2025, 1, 1)
 
-    lived = model.lived_weeks(today)
-    total = model.total_weeks()
+    lived_weeks = model.lived_weeks(today)
+    total_weeks = model.total_weeks()
 
-    week_grid = render_week_grid(lived, total)
-    month_grid = render_month_grid(lived, total)
+    lived_months = lived_weeks // 4
+    total_months = total_weeks // 4
 
-    return f"""
-    <html>
-    <head>
-        <title>Life in Weeks</title>
-    </head>
-    <body style="background:#fafafa;">
-        <div style="
-        max-width: 900px;
-        margin: 40px auto;
-        padding: 24px;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.05);
-        ">
+    current_week_index = lived_weeks - 1
+    current_month_index = lived_months - 1
 
-        <h2>Life in Weeks</h2>
-        <p style="color:#555;">
-            Each square represents one week of life.
-        </p>
-        <pre style="line-height: 1.2;">{week_grid}</pre>
+    return render_template(
+        "index.html",
+        lived_weeks=lived_weeks,
+        total_weeks=total_weeks,
+        lived_months=lived_months,
+        total_months=total_months,
+        current_week_index=current_week_index,
+        current_month_index=current_month_index,
 
-        <hr style="margin: 32px 0; border: none; border-top: 1px solid #eee;">
-
-        <h2>Life in Months</h2>
-        <p style="color:#555;">
-            Each circle represents one month of life.
-        </p>
-        <pre style="line-height: 1.4;">{month_grid}</pre>
-
-        </div>
-    </body>
-    </html>
-    """
-
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
