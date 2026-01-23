@@ -43,8 +43,8 @@ def home():
     lived_weeks = model.lived_weeks(today)
     total_weeks = model.total_weeks()
 
-    lived_months = lived_weeks // 4
-    total_months = total_weeks // 4
+    lived_months = model.lived_months(today)
+    total_months = lifespan * 12
 
     current_week_index = lived_weeks - 1
     current_month_index = lived_months - 1

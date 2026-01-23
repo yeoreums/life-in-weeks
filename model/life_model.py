@@ -61,3 +61,9 @@ class LifeModel:
         # TODO: implement
         remaining = self.total_weeks() - self.lived_weeks()
         return max(remaining, 0)    # return positive always
+    
+    def lived_months(self, today: date | None = None) -> int:
+        if today is None:
+            today = date.today()
+        return (today.year - self.birth_date.year) * 12 + (today.month - self.birth_date.month)
+
