@@ -9,7 +9,6 @@
 <body>
     <div class="container">
 
-        <!-- STATS -->
         <div class="stats-grid">
             <div class="stat-card">
                 <h3>Months Lived</h3>
@@ -21,90 +20,50 @@
             </div>
         </div>
 
-        <!-- LEGEND -->
         <div class="legend">
-            <div class="legend-item">
-                <div class="dot-sample lived"></div> Lived
-            </div>
-            <div class="legend-item">
-                <div class="dot-sample now"></div> Present
-            </div>
-            <div class="legend-item">
-                <div class="dot-sample remaining"></div> Remaining
-            </div>
+            <div class="legend-item"><div class="dot-sample lived"></div> Lived</div>
+            <div class="legend-item"><div class="dot-sample now"></div> Present</div>
+            <div class="legend-item"><div class="dot-sample remaining"></div> Remaining</div>
         </div>
 
-        <!-- CONTROLS -->
         <form method="get" class="tuner-group">
             <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px;">
                 <label>
                     Birthdate:
-                    <input
-                        type="text"
-                        class="birth-input"
-                        name="birthdate"
-                        value="{{ birthdate }}"
-                        inputmode="numeric"
-                        placeholder="19960520"
-                        onchange="this.form.submit()"
-                    >
+                    <input type="text" class="birth-input" name="birthdate" value="{{ birthdate }}" inputmode="numeric" placeholder="19960520" onchange="this.form.submit()">
                 </label>
-
-                <label>
-                  Expected Lifespan:
-                  <span id="lifespan-value" style="color:var(--color-accent); font-weight:bold;">
-                    {{ lifespan }}
-                  </span>
-                </label>
-
+                <label>Expected Lifespan: <span id="lifespan-value" style="color:var(--color-accent); font-weight:bold;">{{ lifespan }}</span></label>
             </div>
-
-            <!-- IMPORTANT: no auto-submit here -->
-            <input
-                type="range"
-                name="lifespan"
-                min="1"
-                max="120"
-                value="{{ lifespan }}"
-                oninput="document.getElementById('lifespan-value').innerText = this.value"
-                onchange="this.form.submit()"
-            >
-
+            <input type="range" name="lifespan" min="1" max="120" value="{{ lifespan }}" oninput="document.getElementById('lifespan-value').innerText = this.value" onchange="this.form.submit()">
         </form>
 
-        <!-- WEEKS -->
         <h2>Life in Weeks</h2>
-        <h2>Life in Weeks</h2>
-        <p style="opacity:0.6; font-size:0.75rem; margin-bottom:8px;">
-          Each row represents one completed year of life
-        </p>
+        <p style="opacity:0.6; font-size:0.75rem; margin-bottom:20px;">Each row represents year of life, shown in weeks</p>
 
         <div class="life-grid">
             {% for year in life_map %}
                 {% set year_index = loop.index0 %}
                 <div class="year-row">
-                    <span class="year-label">{{ year_index + 1 }}</span>
+                    <span class="year-label">
+                        {% if (year_index + 1) == 1 or (year_index + 1) % 5 == 0 %}
+                            {{ year_index + 1 }}
+                        {% endif %}
+                    </span>
                     <div class="weeks-row">
                         {% for week in year %}
-                            <div
-                                class="week {{ 'lived' if week.lived }} {{ 'current' if week.current }}"
-                                title="Year {{ year_index }}, Week {{ week.week_num }}"
-                            ></div>
+                            <div class="week {{ 'lived' if week.lived }} {{ 'current' if week.current }}"
+                                 title="Year {{ year_index + 1 }}, Week {{ week.week_num }}">
+                            </div>
                         {% endfor %}
                     </div>
                 </div>
             {% endfor %}
         </div>
 
-        <!-- MONTHS -->
         <h2 style="margin-top: 60px;">Life in Months</h2>
         <div class="months-grid">
             {% for m in range(total_months) %}
-                <div
-                    class="month
-                    {{ 'lived' if m < lived_months }}
-                    {{ 'current' if m == current_month_idx }}"
-                ></div>
+                <div class="month {{ 'lived' if m < lived_months }} {{ 'current' if m == current_month_idx }}"></div>
             {% endfor %}
         </div>
 

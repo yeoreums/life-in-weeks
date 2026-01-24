@@ -40,6 +40,7 @@ body {
   background: var(--container-bg);
   border-radius: 32px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
 }
 
 /* =========================
@@ -179,8 +180,9 @@ h2::before {
 
 .weeks-row {
   display: grid;
-  grid-template-columns: repeat(52, var(--week-size));
+  grid-template-columns: repeat(auto-fill, var(--week-size));
   gap: 4px;
+  flex-grow: 1;
 }
 
 .week {
@@ -201,6 +203,19 @@ h2::before {
   transform: scale(1.3);
   animation: pulse 2s infinite;
   z-index: 2;
+  position: relative;
+}
+
+.week.current::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 5px;
+  background: var(--color-accent);
+  border-radius: 2px;
 }
 
 /* =========================
@@ -208,11 +223,39 @@ h2::before {
 ========================= */
 .months-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(18px, 1fr));
-  gap: 10px;
-  padding: 24px;
-  background: rgba(0,0,0,0.2);
-  border-radius: 20px;
+  grid-template-columns: repeat(auto-fill, 18px);
+  gap: 6px;
+  margin: 0 auto;          /* Centers the whole "card" */
+  width: 100%;
+  max-width: 920px;
+  justify-content: center;
+}
+
+/* 2. DESKTOP: Force exactly 36 columns when the window is wide enough */
+@media (min-width: 1000px) {
+  .months-grid {
+    grid-template-columns: repeat(36, 18px);
+    width: fit-content;
+  }
+
+  /* Only show the "Year Gaps" on Desktop where the 36-col logic exists */
+  .month:nth-child(12n) {
+    margin-right: 10px;
+  }
+  .month:nth-child(36n) {
+    margin-right: 0;
+  }
+}
+
+/* Every 12th month (December), add a little extra margin to the right */
+.month:nth-child(12n) {
+  margin-right: 12px;
+}
+
+/* Remove the margin for the very last month in the row (the 36th) 
+   so the grid stays perfectly centered */
+.month:nth-child(36n) {
+  margin-right: 0;
 }
 
 .month {
@@ -220,7 +263,8 @@ h2::before {
   height: 18px;
   border-radius: 50%;
   background: var(--color-remaining);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .month.lived {
@@ -259,11 +303,28 @@ h2::before {
 ========================= */
 @media (max-width: 800px) {
   .weeks-row {
-    grid-template-columns: repeat(auto-fill, var(--week-size));
-    flex-grow: 1;
+    grid-template-columns: repeat(52, var(--week-size));
   }
 
   .container {
     padding: 20px;
   }
+}
+
+/* =========================
+   DIVIDER (Keep only if used in HTML)
+========================= */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  margin: 40px 0;
+}
+
+/* =========================
+   ANIMATIONS 
+========================= */
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
 }

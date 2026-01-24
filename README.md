@@ -23,3 +23,17 @@ A deterministic visualization of time progression.
 
 ## Planned extensions
 - Optional time-allocation lenses (sleep, eating)
+
+## Modeling notes (MVP limitations)
+
+This project intentionally prioritizes clarity and simplicity over calendar-level accuracy.
+
+- Weeks are modeled as 52 per year for visualization purposes  
+  (leap years and week 53 are not accounted for)
+
+- Months lived are calculated at the month level only  
+  (day-of-month precision is intentionally ignored)
+
+- The visualization represents a deterministic timeline, not a precise calendar mapping
+
+These tradeoffs are deliberate for the MVP and may be refined in future iterations.
