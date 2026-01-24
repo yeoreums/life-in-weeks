@@ -280,15 +280,17 @@ h2::before {
   animation: pulse 2s infinite;
 }
 
-/* Month hover interaction (restored) */
-.month:hover {
-  transform: scale(1.6);
-  border-color: #ffffff;
-  z-index: 10;
-  cursor: pointer;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+/* Apply hover effects only on devices that support true hover
+   to avoid stuck states on touch devices */
+@media (hover: hover) and (pointer: fine) {
+  .month:hover {
+    transform: scale(1.6);
+    border-color: #ffffff;
+    z-index: 10;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  }
 }
-
 
 /* =========================
    ANIMATIONS
@@ -302,6 +304,8 @@ h2::before {
 /* =========================
    RESPONSIVE
 ========================= */
+/* Mobile: weeks remain 1-row-per-year.
+   Horizontal scroll is intentional to preserve the timeline model. */
 @media (max-width: 800px) {
   :root {
     --week-size: 8px;
