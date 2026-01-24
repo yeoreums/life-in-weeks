@@ -3,6 +3,10 @@
 A small project that visualizes lived and remaining time
 based on a fixed lifespan assumption chosen by the user.
 
+## Live demo
+
+[Life in Weeks](https://life-in-weeks-clzz.onrender.com)
+
 ## What this is
 A deterministic visualization of time progression.
 
