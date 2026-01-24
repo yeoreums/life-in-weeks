@@ -7,6 +7,8 @@ based on a fixed lifespan assumption chosen by the user.
 
 [Life in Weeks](https://life-in-weeks-clzz.onrender.com)
 
+_(First load may take a few seconds due to server cold start.)_
+
 ## What this is
 A deterministic visualization of time progression.
 
