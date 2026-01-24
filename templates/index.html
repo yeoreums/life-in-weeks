@@ -1,56 +1,113 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>Life Calendar</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    </head>
-    <body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
 
-        <div class="container">
+        <!-- STATS -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Months Lived</h3>
+                <div class="value">{{ lived_months }}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Months Remaining</h3>
+                <div class="value">{{ total_months - lived_months }}</div>
+            </div>
+        </div>
 
-        <form method="get" style="margin-bottom: 24px;">
-        <label>
-            Birthdate:
+        <!-- LEGEND -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="dot-sample lived"></div> Lived
+            </div>
+            <div class="legend-item">
+                <div class="dot-sample now"></div> Present
+            </div>
+            <div class="legend-item">
+                <div class="dot-sample remaining"></div> Remaining
+            </div>
+        </div>
+
+        <!-- CONTROLS -->
+        <form method="get" class="tuner-group">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px;">
+                <label>
+                    Birthdate:
+                    <input
+                        type="text"
+                        class="birth-input"
+                        name="birthdate"
+                        value="{{ birthdate }}"
+                        inputmode="numeric"
+                        placeholder="19960520"
+                        onchange="this.form.submit()"
+                    >
+                </label>
+
+                <label>
+                  Expected Lifespan:
+                  <span id="lifespan-value" style="color:var(--color-accent); font-weight:bold;">
+                    {{ lifespan }}
+                  </span>
+                </label>
+
+            </div>
+
+            <!-- IMPORTANT: no auto-submit here -->
             <input
-            type="text"
-            name="birthdate"
-            value="{{ birthdate }}"
-            placeholder="YYYY-MM-DD"
-            required
-            >
-        </label>
-        <label style="margin-left: 16px;">
-            Lifespan (years):
-            <input
-                type="number"
+                type="range"
                 name="lifespan"
-                value="{{ lifespan }}"
                 min="1"
-                max="130"
-                step="1"
-                required
-                >
-        </label>
+                max="120"
+                value="{{ lifespan }}"
+                oninput="document.getElementById('lifespan-value').innerText = this.value"
+                onchange="this.form.submit()"
+            >
 
-        <button type="submit">Update</button>
         </form>
 
-        <h2 class="weeks-title">Life in Weeks</h2>
-        <div class="weeks">
-            {% for i in range(total_weeks) %}
-            <div class="week {{ 'lived' if i < lived_weeks else 'remaining' }}"></div>
+        <!-- WEEKS -->
+        <h2>Life in Weeks</h2>
+        <h2>Life in Weeks</h2>
+        <p style="opacity:0.6; font-size:0.75rem; margin-bottom:8px;">
+          Each row represents one completed year of life
+        </p>
+
+        <div class="life-grid">
+            {% for year in life_map %}
+                {% set year_index = loop.index0 %}
+                <div class="year-row">
+                    <span class="year-label">{{ year_index + 1 }}</span>
+                    <div class="weeks-row">
+                        {% for week in year %}
+                            <div
+                                class="week {{ 'lived' if week.lived }} {{ 'current' if week.current }}"
+                                title="Year {{ year_index }}, Week {{ week.week_num }}"
+                            ></div>
+                        {% endfor %}
+                    </div>
+                </div>
             {% endfor %}
         </div>
 
-        <h2 class="months-title">Life in Months</h2>
-        <div class="months">
-            {% for i in range(total_months) %}
-            <div class="month {{ 'lived' if i < lived_months else 'remaining' }}"></div>
+        <!-- MONTHS -->
+        <h2 style="margin-top: 60px;">Life in Months</h2>
+        <div class="months-grid">
+            {% for m in range(total_months) %}
+                <div
+                    class="month
+                    {{ 'lived' if m < lived_months }}
+                    {{ 'current' if m == current_month_idx }}"
+                ></div>
             {% endfor %}
         </div>
 
-        </div>
-
-    </body>
+    </div>
+</body>
 </html>
