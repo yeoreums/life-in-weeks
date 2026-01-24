@@ -300,21 +300,55 @@ h2::before {
 }
 
 /* =========================
-   RESPONSIVE
+   RESPONSIVE (MOBILE)
 ========================= */
 @media (max-width: 800px) {
   :root {
-    --week-size: 8px;
+    /* 1. Slightly larger dots on mobile for better touch targets */
+    --week-size: 8px; 
+  }
+
+  /* 2. Enable horizontal scrolling for the whole container */
+  .container {
+    padding: 20px;
+    padding-bottom: 60px; /* Space for thumb scrolling */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+    
+    /* Ensure the sticky labels have a positioned parent */
+    position: relative; 
+  }
+
+  /* 3. Define the Year Row */
+  .year-row {
+    /* Force the row to be wide enough to trigger scrolling */
+    min-width: 650px; 
+    
+    /* Add breathing room on the far right edge */
+    padding-right: 30px; 
+  }
+
+  /* 4. THE MAGIC: Make the Year Label Sticky */
+  .year-label {
+    position: sticky;
+    left: 0;
+    
+    /* Ensure it sits ON TOP of the scrolling dots */
+    z-index: 10;
+    
+    /* Match background to container so dots disappear BEHIND it */
+    background: var(--container-bg); 
+    
+    /* Add a little padding to the right of the number for visual separation */
+    padding-right: 8px;
+    
+    /* Fix alignment since it's now sticky */
+    text-align: left; 
+    width: 35px; /* Fixed width prevents jitter */
   }
 
   .weeks-row {
     grid-template-columns: repeat(52, var(--week-size));
-    min-width: 600px;
-  }
-
-  .container {
-    padding: 20px;
-    padding-bottom: 60px;
   }
 }
 
