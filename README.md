@@ -12,27 +12,30 @@ _(First load may take a few seconds due to server cold start.)_
 ## What this is
 A deterministic visualization of time progression.
 
+An optional time-allocation lens allows viewing remaining life
+after accounting for daily obligations such as sleep and work.
+
 ## What this is not
-- A death prediction tool
-- A productivity tracker
-- A motivational or behavioral app
+- A death prediction tool  
+- A productivity tracker  
+- A motivational or behavioral app  
 
 ## Core assumptions
 - Lifespan is user-defined
 - Time progresses deterministically
-- No personalization or optimization
+- Time allocation is approximate and illustrative, not prescriptive
+- No personalization, optimization, or tracking
 
-## MVP scope
+## Current scope
 - Birth date input
 - Expected lifespan input
 - Visual grid of weeks lived vs remaining
+- Optional time-allocation lens (sleep, work, commute/chores)
+- Aggregate awareness metrics (e.g. free time per day, free years remaining)
 
-## Planned extensions
-- Optional time-allocation lenses (sleep, eating)
+## Modeling notes (intentional limitations)
 
-## Modeling notes (MVP limitations)
-
-This project intentionally prioritizes clarity and simplicity over calendar-level accuracy.
+This project prioritizes clarity and awareness over calendar-level accuracy.
 
 - Weeks are modeled as 52 per year for visualization purposes  
   (leap years and week 53 are not accounted for)
@@ -40,6 +43,6 @@ This project intentionally prioritizes clarity and simplicity over calendar-leve
 - Months lived are calculated at the month level only  
   (day-of-month precision is intentionally ignored)
 
-- The visualization represents a deterministic timeline, not a precise calendar mapping
+- Time-allocation values are user-provided estimates, not measured data
 
-These tradeoffs are deliberate for the MVP and may be refined in future iterations.
+The visualization represents a conceptual timeline, not a precise calendar or forecast.
