@@ -11,6 +11,10 @@ app = Flask(
     static_folder=os.path.join(BASE_DIR, "static"),
 )
 
+def fmt(val):
+    return int(val) if isinstance(val, (int, float)) and val.is_integer() else val
+
+
 @app.route("/")
 def home():
     birth_str = request.args.get("birthdate")
@@ -38,7 +42,7 @@ def home():
 
     overhead = min(sleep + work + commute, 24)
     free_ratio = (24 - overhead) / 24
-    free_hours_per_day = round(24 - overhead, 1)
+    free_hours_per_day = fmt(round(24 - overhead, 1))
     has_lens = overhead > 0
 
     today = date.today()
@@ -82,7 +86,7 @@ def home():
     # -------- Awareness Metrics (NOW SAFE) --------
     remaining_weeks = lifespan * 52 - lived_weeks
     free_weeks_remaining = int(remaining_weeks * free_ratio)
-    free_years_remaining = round(free_weeks_remaining / 52, 1)
+    free_years_remaining = fmt(round(free_weeks_remaining / 52, 1))
 
     # -------- Life Map --------
     life_map = []
@@ -106,13 +110,13 @@ def home():
         current_month_idx=current_month_idx,
         total_months=total_months,
         life_map=life_map,
-        sleep=sleep,
-        work=work,
-        commute=commute,
+        sleep=fmt(sleep),
+        work=fmt(work),
+        commute=fmt(commute),
         free_ratio=free_ratio,
         has_lens=has_lens,
-        free_hours_per_day=free_hours_per_day,
-        free_years_remaining=free_years_remaining,
+        free_hours_per_day=fmt(free_hours_per_day),
+        free_years_remaining=fmt(free_years_remaining),
     )
 
 if __name__ == "__main__":
