@@ -141,6 +141,43 @@ input[type="range"] {
 }
 
 /* =========================
+   REVEAL BUTTON
+========================= */
+.reveal-btn {
+  appearance: none;
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  color: var(--text-head);
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.15s ease;
+}
+
+/* Hover: calm acknowledgement, not excitement */
+.reveal-btn:hover {
+  border-color: var(--color-accent);
+  background: rgba(45, 212, 191, 0.06);
+}
+
+/* Active: physical press, not reward */
+.reveal-btn:active {
+  transform: translateY(1px);
+}
+
+/* Focus: accessibility without visual noise */
+.reveal-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.25);
+}
+
+/* =========================
    NEW: DAILY INPUT STYLING
 ========================= */
 .daily-inputs {

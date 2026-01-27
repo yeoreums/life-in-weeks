@@ -12,6 +12,110 @@
             style="--free-ratio: {{ free_ratio }};"
         {% endif %}>
 
+        <!-- =========================
+             SETUP (ALWAYS VISIBLE)
+        ========================== -->
+        <form method="get" class="tuner-group">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px;">
+                <label>
+                    Birthdate:
+                    <input type="text"
+                           class="birth-input"
+                           name="birthdate"
+                           value="{{ birthdate }}"
+                           inputmode="numeric"
+                           placeholder="19960520"
+                           onchange="this.form.submit()">
+                </label>
+
+                <label>
+                    Expected Lifespan:
+                    <span id="lifespan-value"
+                          style="color:var(--color-accent); font-weight:bold;">
+                        {{ lifespan }}
+                    </span>
+                </label>
+            </div>
+
+            <input type="range"
+                   name="lifespan"
+                   min="1"
+                   max="120"
+                   value="{{ lifespan }}"
+                   oninput="document.getElementById('lifespan-value').innerText = this.value"
+                   onchange="this.form.submit()">
+
+            <div style="margin-top: 20px;">
+                <button type="submit"
+                        name="show"
+                        value="true"
+                        class="reveal-btn">
+                    Show my timeline
+                </button>
+            </div>
+
+            <!-- =========================
+                 LENS (ONLY AFTER REVEAL)
+            ========================== -->
+            {% if show %}
+            <div class="daily-inputs">
+                <div class="input-item">
+                    <label>Sleep (hrs)</label>
+                    <input type="number"
+                           name="sleep"
+                           class="small-input"
+                           value="{{ sleep }}"
+                           step="0.5"
+                           min="0"
+                           max="24"
+                           onchange="this.form.submit()">
+                </div>
+
+                <div class="input-item">
+                    <label>Work (hrs)</label>
+                    <input type="number"
+                           name="work"
+                           class="small-input"
+                           value="{{ work }}"
+                           step="0.5"
+                           min="0"
+                           max="24"
+                           onchange="this.form.submit()">
+                </div>
+
+                <div class="input-item">
+                    <label>Commute/Chores</label>
+                    <input type="number"
+                           name="commute"
+                           class="small-input"
+                           value="{{ commute }}"
+                           step="0.5"
+                           min="0"
+                           max="24"
+                           onchange="this.form.submit()">
+                </div>
+            </div>
+
+            {% if has_lens %}
+            <div class="awareness-banner">
+                <div class="awareness-item">
+                    <span class="label">Free time per day</span>
+                    <span class="value teal">{{ free_hours_per_day }} h</span>
+                </div>
+                <div class="awareness-item">
+                    <span class="label">Free years remaining</span>
+                    <span class="value teal">{{ free_years_remaining }} y</span>
+                </div>
+            </div>
+            {% endif %}
+            {% endif %}
+        </form>
+
+        <!-- =========================
+             REVEAL (GATED)
+        ========================== -->
+        {% if show %}
+
         <div class="stats-grid">
             <div class="stat-card">
                 <h3>Months Lived</h3>
@@ -28,51 +132,6 @@
             <div class="legend-item"><div class="dot-sample now"></div> Present</div>
             <div class="legend-item"><div class="dot-sample remaining"></div> Remaining</div>
         </div>
-
-        <form method="get" class="tuner-group">
-            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px;">
-                <label>
-                    Birthdate:
-                    <input type="text" class="birth-input" name="birthdate" value="{{ birthdate }}" inputmode="numeric" placeholder="19960520" onchange="this.form.submit()">
-                </label>
-                <label>
-                    Expected Lifespan:
-                    <span id="lifespan-value" style="color:var(--color-accent); font-weight:bold;">{{ lifespan }}</span>
-                </label>
-            </div>
-
-            <input type="range" name="lifespan" min="1" max="120" value="{{ lifespan }}"
-                   oninput="document.getElementById('lifespan-value').innerText = this.value"
-                   onchange="this.form.submit()">
-
-            <div class="daily-inputs">
-                <div class="input-item">
-                    <label>Sleep (hrs)</label>
-                    <input type="number" name="sleep" class="small-input" value="{{ sleep }}" step="0.5" min="0" max="24" onchange="this.form.submit()">
-                </div>
-                <div class="input-item">
-                    <label>Work (hrs)</label>
-                    <input type="number" name="work" class="small-input" value="{{ work }}" step="0.5" min="0" max="24" onchange="this.form.submit()">
-                </div>
-                <div class="input-item">
-                    <label>Commute/Chores</label>
-                    <input type="number" name="commute" class="small-input" value="{{ commute }}" step="0.5" min="0" max="24" onchange="this.form.submit()">
-                </div>
-            </div>
-
-            {% if has_lens %}
-            <div class="awareness-banner">
-                <div class="awareness-item">
-                    <span class="label">Free time per day</span>
-                    <span class="value teal">{{ free_hours_per_day }} h</span>
-                </div>
-                <div class="awareness-item">
-                    <span class="label">Free years remaining</span>
-                    <span class="value teal">{{ free_years_remaining }} y</span>
-                </div>
-            </div>
-            {% endif %}
-        </form>
 
         <h2>Life in Weeks</h2>
         <p style="opacity:0.6; font-size:0.75rem; margin-bottom:20px;">
@@ -110,6 +169,7 @@
             {% endfor %}
         </div>
 
+        {% endif %}
     </div>
 </body>
 </html>
