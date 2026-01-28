@@ -416,6 +416,10 @@ h2::before {
 /* =========================
    VIEW TOGGLE
 ========================= */
+#timeline-view {
+  scroll-margin-top: 60px;
+}
+
 .view-toggle {
   display: inline-flex;
   background: rgba(255, 255, 255, 0.03);

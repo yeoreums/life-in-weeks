@@ -137,15 +137,15 @@
             <div class="legend-item"><div class="dot-sample remaining"></div> Remaining</div>
         </div>
 
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
-                    <h2 style="margin: 0;">Life in {{ "Weeks" if view == "weeks" else "Months" }}</h2>
-                    
+        <div id="timeline-view" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+            <h2 style="margin: 0;">Life in {{ "Weeks" if view == "weeks" else "Months" }}</h2>
+                            
                     <div class="view-toggle">
-                        <a href="?show=true&view=weeks&birthdate={{ birthdate }}&lifespan={{ lifespan }}&sleep={{ sleep }}&work={{ work }}&commute={{ commute }}" 
+                        <a href="?show=true&view=weeks&birthdate={{ birthdate }}&lifespan={{ lifespan }}&sleep={{ sleep }}&work={{ work }}&commute={{ commute }}#timeline-view" 
                         class="toggle-option {% if view == 'weeks' %}active{% endif %}">
                             Weeks
                         </a>
-                        <a href="?show=true&view=months&birthdate={{ birthdate }}&lifespan={{ lifespan }}&sleep={{ sleep }}&work={{ work }}&commute={{ commute }}" 
+                        <a href="?show=true&view=months&birthdate={{ birthdate }}&lifespan={{ lifespan }}&sleep={{ sleep }}&work={{ work }}&commute={{ commute }}#timeline-view" 
                         class="toggle-option {% if view == 'months' %}active{% endif %}">
                             Months
                         </a>
