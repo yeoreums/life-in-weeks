@@ -414,6 +414,39 @@ h2::before {
 }
 
 /* =========================
+   VIEW TOGGLE
+========================= */
+.view-toggle {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.toggle-option {
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-sub);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.toggle-option:hover {
+  color: var(--text-head);
+}
+
+.toggle-option.active {
+  background: var(--color-accent);
+  color: var(--bg-main);
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
 @media (max-width: 800px) {

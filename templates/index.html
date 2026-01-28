@@ -16,6 +16,10 @@
              SETUP (ALWAYS VISIBLE)
         ========================== -->
         <form method="get" class="tuner-group">
+            {% if show %}
+            <input type="hidden" name="show" value="true">
+            <input type="hidden" name="view" value="{{ view }}">
+            {% endif %}
             <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px;">
                 <label>
                     Birthdate:
@@ -133,41 +137,58 @@
             <div class="legend-item"><div class="dot-sample remaining"></div> Remaining</div>
         </div>
 
-        <h2>Life in Weeks</h2>
-        <p style="opacity:0.6; font-size:0.75rem; margin-bottom:20px;">
-            {% if has_lens %}
-                <span style="color: var(--color-accent)">Showing Available Free Time Overlay</span>
-            {% else %}
-                Each row represents year of life, shown in weeks
-            {% endif %}
-        </p>
-
-        <div class="life-grid">
-            {% for year in life_map %}
-                {% set year_index = loop.index0 %}
-                <div class="year-row">
-                    <span class="year-label">
-                        {% if (year_index + 1) == 1 or (year_index + 1) % 5 == 0 %}
-                            {{ year_index + 1 }}
-                        {% endif %}
-                    </span>
-                    <div class="weeks-row">
-                        {% for week in year %}
-                            <div class="week {{ 'lived' if week.lived }} {{ 'current' if week.current }}"
-                                 title="Year {{ year_index + 1 }}, Week {{ week.week_num }}">
-                            </div>
-                        {% endfor %}
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                    <h2 style="margin: 0;">Life in {{ "Weeks" if view == "weeks" else "Months" }}</h2>
+                    
+                    <div class="view-toggle">
+                        <a href="?show=true&view=weeks&birthdate={{ birthdate }}&lifespan={{ lifespan }}&sleep={{ sleep }}&work={{ work }}&commute={{ commute }}" 
+                        class="toggle-option {% if view == 'weeks' %}active{% endif %}">
+                            Weeks
+                        </a>
+                        <a href="?show=true&view=months&birthdate={{ birthdate }}&lifespan={{ lifespan }}&sleep={{ sleep }}&work={{ work }}&commute={{ commute }}" 
+                        class="toggle-option {% if view == 'months' %}active{% endif %}">
+                            Months
+                        </a>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
 
-        <h2 style="margin-top: 60px;">Life in Months</h2>
-        <div class="months-grid">
-            {% for m in range(total_months) %}
-                <div class="month {{ 'lived' if m < lived_months }} {{ 'current' if m == current_month_idx }}"></div>
-            {% endfor %}
-        </div>
+                <p style="opacity:0.6; font-size:0.75rem; margin-bottom:20px;">
+                    {% if has_lens %}
+                        <span style="color: var(--color-accent)">Showing Available Free Time Overlay</span>
+                    {% else %}
+                        Each {{ "row represents year of life, shown in weeks" if view == "weeks" else "circle represents one month" }}
+                    {% endif %}
+                </p>
+
+                {% if view == 'weeks' %}
+                <div class="life-grid">
+                    {% for year in life_map %}
+                        {% set year_index = loop.index0 %}
+                        <div class="year-row">
+                            <span class="year-label">
+                                {% if (year_index + 1) == 1 or (year_index + 1) % 5 == 0 %}
+                                    {{ year_index + 1 }}
+                                {% endif %}
+                            </span>
+                            <div class="weeks-row">
+                                {% for week in year %}
+                                    <div class="week {{ 'lived' if week.lived }} {{ 'current' if week.current }}"
+                                        title="Year {{ year_index + 1 }}, Week {{ week.week_num }}">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if view == 'months' %}
+                <div class="months-grid">
+                    {% for m in range(total_months) %}
+                        <div class="month {{ 'lived' if m < lived_months }} {{ 'current' if m == current_month_idx }}"></div>
+                    {% endfor %}
+                </div>
+                {% endif %}
 
         {% endif %}
     </div>

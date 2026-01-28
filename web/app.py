@@ -20,6 +20,7 @@ def home():
     birth_str = request.args.get("birthdate")
     lifespan_str = request.args.get("lifespan")
     show = request.args.get("show") == "true"
+    view = request.args.get("view", "weeks")
 
     # --- Time Lens Inputs ---
     try:
@@ -105,6 +106,7 @@ def home():
     return render_template(
         "index.html",
         show=show,
+        view=view,
         birthdate=birth.isoformat(),
         lifespan=lifespan,
         lived_weeks=lived_weeks,
