@@ -11,6 +11,7 @@ _(First load may take a few seconds due to server cold start.)_
 
 ## What this is
 A deterministic visualization of time progression.
+designed to support reflection on time as a finite resource.
 
 An optional time-allocation lens allows viewing remaining life
 after accounting for daily obligations such as sleep and work.
