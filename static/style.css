@@ -456,11 +456,6 @@ h2::before {
 @media (max-width: 800px) {
   :root { --week-size: 8px; }
 
-  .weeks-row {
-    grid-template-columns: repeat(52, var(--week-size));
-    padding-right: 24px;
-  }
-
   .container {
     padding: 20px;
     padding-bottom: 60px;
@@ -521,5 +516,41 @@ h2::before {
   .months-grid {
     overflow-x: auto;
     padding-bottom: 20px;
+  }
+
+  /* ===============================
+     WEEKS — MOBILE FLUID ROW FIX
+     =============================== */
+
+  /* Never allow horizontal scroll */
+  .life-grid {
+    overflow-x: hidden !important;
+    width: 100%;
+    padding: 0 5px;
+  }
+
+  /* Force exactly 52 weeks into ONE row */
+  .weeks-row {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between;
+    gap: 1px;
+    width: 100%;
+  }
+
+  /* Turn weeks into thin vertical slivers */
+  .week {
+    flex: 1;
+    min-width: 0;
+    height: 8px;
+    aspect-ratio: auto;
+    border-radius: 0;
+  }
+
+  /* Keep year labels readable */
+  .year-label {
+    min-width: 20px;
+    font-size: 0.6rem;
+    margin-right: 4px;
   }
 }
