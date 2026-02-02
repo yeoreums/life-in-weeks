@@ -544,6 +544,7 @@ h2::before {
 
   /* Turn weeks into thin vertical slivers */
   .week {
+    width: auto !important;
     flex: 1;
     min-width: 0;
     height: 8px;
