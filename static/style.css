@@ -475,3 +475,51 @@ h2::before {
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
   margin: 40px 0;
 }
+
+/* ===============================
+   MOBILE OPTIMIZATIONS
+   =============================== */
+@media (max-width: 768px) {
+
+  .tuner-group > .setup-row {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 12px;
+  }
+
+  .tuner-group label {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .daily-inputs {
+    gap: 16px;
+  }
+
+  .daily-inputs .input-item {
+    width: 48%;
+  }
+
+  .daily-inputs .input-item.full-width {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .reveal-btn {
+    width: 100%;
+    padding: 12px !important;
+    font-size: 1rem !important;
+  }
+
+  input[type="number"],
+  input[type="text"] {
+    font-size: 16px !important;
+  }
+
+  .life-grid,
+  .months-grid {
+    overflow-x: auto;
+    padding-bottom: 20px;
+  }
+}

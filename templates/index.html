@@ -20,7 +20,8 @@
             <input type="hidden" name="show" value="true">
             <input type="hidden" name="view" value="{{ view }}">
             {% endif %}
-            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px;">
+            <div class="setup-row"
+                 style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px;">
                 <label>
                     Birthdate:
                     <input type="text"
@@ -95,7 +96,7 @@
                            min="0"
                            max="24">
                 </div>
-            <div class="input-item" style="justify-content: flex-end; margin-left: auto;">
+            <div class="input-item full-width" style="justify-content: flex-end; margin-left: auto;">
                 <button type="submit"
                         name="show"
                         value="true"
