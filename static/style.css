@@ -476,6 +476,10 @@ h2::before {
    =============================== */
 @media (max-width: 768px) {
 
+  .container {
+    overflow-x: hidden;
+  }
+
   .tuner-group > .setup-row {
     flex-direction: column;
     align-items: flex-start !important;
