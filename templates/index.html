@@ -152,11 +152,11 @@
                 JSON API available at <code>/api/life</code>
             </p>                
                     <div class="view-toggle">
-                        <a href="/?view=weeks#timeline-view"
+                        <a href="{{ weeks_url }}"
                         class="toggle-option {% if view == 'weeks' %}active{% endif %}">
                             Weeks
                         </a>
-                        <a href="/?view=months#timeline-view"
+                        <a href="{{ months_url }}"
                         class="toggle-option {% if view == 'months' %}active{% endif %}">
                             Months
                         </a>

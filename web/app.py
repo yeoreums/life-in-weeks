@@ -5,6 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from datetime import date
 from model.life_model import LifeModel
+from urllib.parse import urlencode
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -94,6 +95,11 @@ async def home(
             })
         life_map.append(year_weeks)
 
+    args = dict(request.query_params)
+
+    weeks_url = "/?" + urlencode({**args, "view": "weeks"}) + "#timeline-view"
+    months_url = "/?" + urlencode({**args, "view": "months"}) + "#timeline-view"
+
     return templates.TemplateResponse(
         "index.html",
         {
@@ -114,6 +120,8 @@ async def home(
             "has_lens": has_lens,
             "free_hours_per_day": free_hours_per_day,
             "free_years_remaining": free_years_remaining,
+            "weeks_url": weeks_url,
+            "months_url": months_url,
         },
     )
 
