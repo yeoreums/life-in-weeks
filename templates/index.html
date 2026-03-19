@@ -152,11 +152,11 @@
                 JSON API available at <code>/api/life</code>
             </p>                
                     <div class="view-toggle">
-                        <a href="{{ url_for('home', **dict(request.args, view='weeks')) }}#timeline-view"
+                        <a href="/?view=weeks#timeline-view"
                         class="toggle-option {% if view == 'weeks' %}active{% endif %}">
                             Weeks
                         </a>
-                        <a href="{{ url_for('home', **dict(request.args, view='months')) }}#timeline-view"
+                        <a href="/?view=months#timeline-view"
                         class="toggle-option {% if view == 'months' %}active{% endif %}">
                             Months
                         </a>
