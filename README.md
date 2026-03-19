@@ -1,49 +1,101 @@
 # Life in Weeks
 
-A small project that visualizes lived and remaining time
-based on a fixed lifespan assumption chosen by the user.
+A web application that visualizes lived and remaining time based on a user-defined lifespan.
 
-## Live demo
+Live demo: [https://life-in-weeks-clzz.onrender.com](https://life-in-weeks-clzz.onrender.com)
+(First load may take a few seconds due to server cold start)
 
-[Life in Weeks](https://life-in-weeks-clzz.onrender.com)
+---
 
-_(First load may take a few seconds due to server cold start.)_
+## Overview
+
+This project models time as a finite resource and renders it as a structured timeline (weeks or months).
+
+It includes an optional "time allocation lens" that adjusts remaining life based on daily constraints such as sleep, work, and commute.
+
+---
+
+## Key Features
+
+* Birthdate and lifespan input
+* Week-level and month-level life visualization
+* Time allocation lens (sleep, work, commute/chores)
+* Derived metrics:
+
+  * Free time per day
+  * Free years remaining
+* Toggle between weeks and months view
+
+---
+
+## API
+
+The application also exposes a JSON API:
+
+**GET `/api/life`**
+
+Example:
+
+```
+/api/life?birthdate=19900101&lifespan=90&sleep=8&work=8&commute=2
+```
+
+Response:
+
+```json
+{
+  "lived_weeks": 1800,
+  "free_years_remaining": 18.5,
+  "free_hours_per_day": 6
+}
+```
+
+---
 
 ## What this is
-A deterministic visualization of time progression.
-designed to support reflection on time as a finite resource.
 
-An optional time-allocation lens allows viewing remaining life
-after accounting for daily obligations such as sleep and work.
+* A deterministic time model for visualizing life progression
+* A tool for reflecting on time as a finite resource
+* A simple backend-driven application with both UI and API layers
+
+---
 
 ## What this is not
-- A death prediction tool  
-- A productivity tracker  
-- A motivational or behavioral app  
 
-## Core assumptions
-- Lifespan is user-defined
-- Time progresses deterministically
-- Time allocation is approximate and illustrative, not prescriptive
-- No personalization, optimization, or tracking
+* A death prediction tool
+* A productivity tracker
+* A behavioral or recommendation system
 
-## Current scope
-- Birth date input
-- Expected lifespan input
-- Visual grid of weeks lived vs remaining
-- Optional time-allocation lens (sleep, work, commute/chores)
-- Aggregate awareness metrics (e.g. free time per day, free years remaining)
+---
 
-## Modeling notes (intentional limitations)
+## Core Assumptions
 
-This project prioritizes clarity and awareness over calendar-level accuracy.
+* Lifespan is user-defined
+* Time progresses deterministically
+* Time allocation is approximate and illustrative
+* No personalization, optimization, or tracking
 
-- Weeks are modeled as 52 per year for visualization purposes  
-  (leap years and week 53 are not accounted for)
+---
 
-- Months lived are calculated at the month level only  
-  (day-of-month precision is intentionally ignored)
+## Modeling Notes (Intentional Limitations)
 
-- Time-allocation values are user-provided estimates, not measured data
+This project prioritizes clarity over calendar-level precision.
 
-The visualization represents a conceptual timeline, not a precise calendar or forecast.
+* Weeks are modeled as 52 per year
+  (leap years and week 53 are not included)
+
+* Months are calculated at a coarse level
+  (day-of-month precision is ignored)
+
+* Time allocation values are user-provided estimates
+
+This is a conceptual model, not a precise calendar or forecast.
+
+---
+
+## Tech Stack
+
+* FastAPI (backend)
+* Jinja2 (templating)
+* Vanilla HTML/CSS/JS (frontend)
+* Deployed on Render

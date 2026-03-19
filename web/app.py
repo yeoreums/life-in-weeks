@@ -1,42 +1,56 @@
 import os
-from flask import Flask, render_template, request
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from datetime import date
 from model.life_model import LifeModel
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-app = Flask(
-    __name__,
-    template_folder=os.path.join(BASE_DIR, "templates"),
-    static_folder=os.path.join(BASE_DIR, "static"),
+app = FastAPI()
+
+app.mount(
+    "/static",
+    StaticFiles(directory=os.path.join(BASE_DIR, "static")),
+    name="static",
 )
 
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+
+
 def fmt(val):
-    return int(val) if isinstance(val, (int, float)) and val.is_integer() else val
+    return int(val) if isinstance(val, (int, float)) and float(val).is_integer() else val
 
 
-@app.route("/")
-def home():
-    birth_str = request.args.get("birthdate")
-    lifespan_str = request.args.get("lifespan")
-    show = request.args.get("show") == "true"
-    view = request.args.get("view", "weeks")
-
-    # --- Time Lens Inputs ---
+# shared function (no duplication)
+def parse_birth(birthdate: str, today: date) -> date:
+    s = birthdate.strip()
     try:
-        sleep = float(request.args.get("sleep", 0))
+        if len(s) == 8 and s.isdigit():
+            return date(int(s[0:4]), int(s[4:6]), int(s[6:8]))
+        elif s:
+            return date.fromisoformat(s)
     except ValueError:
-        sleep = 0
+        pass
+    return date(today.year - 30, today.month, today.day)
 
-    try:
-        work = float(request.args.get("work", 0))
-    except ValueError:
-        work = 0
 
-    try:
-        commute = float(request.args.get("commute", 0))
-    except ValueError:
-        commute = 0
+# ---------------------------
+# HTML PAGE
+# ---------------------------
+@app.get("/", response_class=HTMLResponse)
+async def home(
+    request: Request,
+    birthdate: str = "",
+    lifespan: int = 90,
+    show: str = "",
+    view: str = "weeks",
+    sleep: float = 0,
+    work: float = 0,
+    commute: float = 0,
+):
+    show_flag = show == "true"
 
     sleep = max(0, min(sleep, 24))
     work = max(0, min(work, 24))
@@ -49,35 +63,14 @@ def home():
 
     today = date.today()
 
-    # -------- Birthdate --------
-    if birth_str:
-        birth_str = birth_str.strip()
-        try:
-            if len(birth_str) == 8 and birth_str.isdigit():
-                birth = date(
-                    int(birth_str[0:4]),
-                    int(birth_str[4:6]),
-                    int(birth_str[6:8]),
-                )
-            else:
-                birth = date.fromisoformat(birth_str)
-        except ValueError:
-            birth = date(today.year - 30, today.month, today.day)
-    else:
-        birth = date(today.year - 30, today.month, today.day)
+    # use shared function
+    birth = parse_birth(birthdate, today)
 
     if birth > today:
         birth = today
 
-    # -------- Lifespan --------
-    try:
-        lifespan = int(lifespan_str) if lifespan_str else 90
-    except ValueError:
-        lifespan = 90
-
     lifespan = max(1, min(lifespan, 130))
 
-    # -------- Model --------
     model = LifeModel(birth_date=birth, expected_years=lifespan)
     lived_weeks = model.lived_weeks(today)
 
@@ -85,12 +78,10 @@ def home():
     current_month_idx = lived_months - 1
     total_months = lifespan * 12
 
-    # -------- Awareness Metrics (NOW SAFE) --------
     remaining_weeks = lifespan * 52 - lived_weeks
     free_weeks_remaining = int(remaining_weeks * free_ratio)
     free_years_remaining = fmt(round(free_weeks_remaining / 52, 1))
 
-    # -------- Life Map --------
     life_map = []
     for year_idx in range(lifespan):
         year_weeks = []
@@ -103,25 +94,75 @@ def home():
             })
         life_map.append(year_weeks)
 
-    return render_template(
+    return templates.TemplateResponse(
         "index.html",
-        show=show,
-        view=view,
-        birthdate=birth.isoformat(),
-        lifespan=lifespan,
-        lived_weeks=lived_weeks,
-        lived_months=lived_months,
-        current_month_idx=current_month_idx,
-        total_months=total_months,
-        life_map=life_map,
-        sleep=fmt(sleep),
-        work=fmt(work),
-        commute=fmt(commute),
-        free_ratio=free_ratio,
-        has_lens=has_lens,
-        free_hours_per_day=fmt(free_hours_per_day),
-        free_years_remaining=fmt(free_years_remaining),
+        {
+            "request": request,
+            "show": show_flag,
+            "view": view,
+            "birthdate": birth.isoformat(),
+            "lifespan": lifespan,
+            "lived_weeks": lived_weeks,
+            "lived_months": lived_months,
+            "current_month_idx": current_month_idx,
+            "total_months": total_months,
+            "life_map": life_map,
+            "sleep": fmt(sleep),
+            "work": fmt(work),
+            "commute": fmt(commute),
+            "free_ratio": free_ratio,
+            "has_lens": has_lens,
+            "free_hours_per_day": free_hours_per_day,
+            "free_years_remaining": free_years_remaining,
+        },
     )
 
+
+# ---------------------------
+# API
+# ---------------------------
+@app.get("/api/life")
+async def get_life(
+    birthdate: str = "",
+    lifespan: int = 90,
+    sleep: float = 0,
+    work: float = 0,
+    commute: float = 0,
+):
+    today = date.today()
+
+    sleep = max(0, min(sleep, 24))
+    work = max(0, min(work, 24))
+    commute = max(0, min(commute, 24))
+
+    birth = parse_birth(birthdate, today)
+
+    if birth > today:
+        birth = today
+
+    lifespan = max(1, min(lifespan, 130))
+
+    model = LifeModel(birth_date=birth, expected_years=lifespan)
+    lived_weeks = model.lived_weeks(today)
+
+    overhead = min(sleep + work + commute, 24)
+    free_ratio = (24 - overhead) / 24
+    free_hours_per_day = round(24 - overhead, 1)
+
+    remaining_weeks = lifespan * 52 - lived_weeks
+    free_weeks_remaining = int(remaining_weeks * free_ratio)
+    free_years_remaining = round(free_weeks_remaining / 52, 1)
+
+    return {
+        "lived_weeks": lived_weeks,
+        "free_years_remaining": free_years_remaining,
+        "free_hours_per_day": free_hours_per_day,
+    }
+
+
+# ---------------------------
+# RUN
+# ---------------------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    import uvicorn
+    uvicorn.run("web.app:app", host="0.0.0.0", port=8000, reload=True)

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Life in Weeks</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="container {% if has_lens %}has-lens{% endif %}"
@@ -147,7 +147,10 @@
 
         <div id="timeline-view" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
             <h2 style="margin: 0;">Life in {{ "Weeks" if view == "weeks" else "Months" }}</h2>
-                            
+            
+            <p style="font-size:0.7rem; opacity:0.5;">
+                JSON API available at <code>/api/life</code>
+            </p>                
                     <div class="view-toggle">
                         <a href="{{ url_for('home', **dict(request.args, view='weeks')) }}#timeline-view"
                         class="toggle-option {% if view == 'weeks' %}active{% endif %}">
