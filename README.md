@@ -1,8 +1,9 @@
 # Life in Weeks
 
-A web application that visualizes lived and remaining time based on a user-defined lifespan.
+A deterministic model that visualizes life as a finite timeline based on a user-defined lifespan.
 
 Live demo: [https://life-in-weeks-clzz.onrender.com](https://life-in-weeks-clzz.onrender.com)
+
 (First load may take a few seconds due to server cold start)
 
 ---
@@ -56,7 +57,7 @@ Response:
 
 * A deterministic time model for visualizing life progression
 * A tool for reflecting on time as a finite resource
-* A simple backend-driven application with both UI and API layers
+* A system that combines a visual interface with a programmatic API for exploring time-based metrics
 
 ---
 
